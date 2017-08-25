@@ -1,13 +1,13 @@
 # Flashcard-Generator
 
-Alt-H2 BasicCard.js:
+##BasicCard.js:
 
 **This file should define a Node module that exports a constructor for creating basic flashcards, e.g.: module.exports = BasicCard;**
 - The constructor should accept two arguments: front and back.
 - The constructed object should have a front property that contains the text on the front of the card.
 - The constructed object should have a back property that contains the text on the back of the card.
 
-Alt-H2 ClozeCard.js:
+##ClozeCard.js:
 
 **This file should define a Node module that exports a constructor for creating cloze-deletion flashcards, e.g.: module.exports = ClozeCard;**
 - The constructor should accept two arguments: text and cloze.
