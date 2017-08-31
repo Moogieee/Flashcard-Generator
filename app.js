@@ -4,51 +4,27 @@ var inquirer = require('inquirer');
 var fs = require('fs');
 var wait;
 
-//ask user if they want to create or view flashcards
-var menu = function() {
-    inquirer.prompt([
-        {
-            type: 'list',
-            message: '\nWhat would you like to do?',
-            choices: ['Add new flashcard', 'View all flashcards'],
-            name: 'menuOptions'
-        }
-    ]).then(function(answer) {
-        
-        switch (answer.menuOptions) {
-            case 'Add new flashcard':
-            wait = setTimeout(addCard, 1000);
-            console.log("\nYay! Let's make new flashcards!\n");
-            break;
 
-            case 'View all flashcards':
-            console.log("Here are your flashcards:");
-            viewCards();
-            break;
-        }
-    });
-};
-
-menu();
 
 //create functions for the options the user can choose
 //ask users what type of card they want to create
     //create function for the answers
 
-function addCard() {
+var createCard = function() {
     inquirer.prompt([
         {
             type: 'list',
             message: 'What kind of card would you like to create?',
             choices: ['Basic Flashcard', 'Cloze Flashcard'],
-            name: 'Flashcard Type'
+            name: 'flashcardType'
         }
     ]).then(function(answer) {
-        if ('Basic Flashcard') {
+        if(answer.flashcardType === 'Basic Flashcard') {
             inquirer.prompt([
                 {
-                    name: 'front',
+                    type: 'input',
                     message: 'What is the question?',
+                    name: 'front',
                     validate: function(input) {
                         if (input === '') {
                             console.log('Please enter a question.');
@@ -58,28 +34,33 @@ function addCard() {
                         }
                     }
                 }, {
-                    name: 'back',
+                    type: 'input',
                     message: 'What is the answer?',
+                    name: 'back',
                     validate: function(input) {
                         if (input === '') {
                             console.log('Please enter the answer.');
                             return false;
                         } else {
                             return true;
-                        }    
+                        }
                     }
                 }
             ]).then(function(answer) {
-                var newBasic = new BasicCard(answer.front, answer.back);
+                var newBasic = new BasicCard (answer.front, answer.back);
                 newBasic.createBasic();
-                console.log('\nNew Basic Flashcard created.')
-                menu();
+                console.log('\nNew basic flashcard successfully created.\n')
+                createCard();
+                // var firstPresident = new BasicCard(answer.front, answer.back);
+                // console.log(firstPresident.front);
+                // console.log(firstPresident.back);
             });
-        } else if ('Cloze Flashcard') {
+        } else {
             inquirer.prompt([
                 {
-                    name: 'text',
+                    type: 'input',
                     message: 'What is the full text?',
+                    name: 'text',
                     validate: function(input) {
                         if (input === '') {
                             console.log('Please enter the full text.');
@@ -89,11 +70,12 @@ function addCard() {
                         }
                     }
                 }, {
-                    name: 'cloze',
+                    type: 'input',
                     message: 'What is the cloze part of the text?',
+                    name: 'cloze',
                     validate: function(input) {
                         if (input === '') {
-                            console.log('Please enter the cloze.');
+                            console.log('Please enter the cloze part of your text.');
                             return false;
                         } else {
                             return true;
@@ -101,20 +83,18 @@ function addCard() {
                     }
                 }
             ]).then(function(answer) {
-                var text = answer.text;
-                var cloze = answer.cloze;
-                if (text.includes(cloze)) {
-                    var newCloze = new ClozeCard(text, cloze);
-                    newCloze.createCloze();
-                    console.log('\nNew Cloze Flashcard created.')
-                    menu();
-                }
+                var newCloze = new ClozeCard(answer.text, answer.cloze);
+                newCloze.createCloze();
+                console.log('\nNew cloze card successfully created.\n')
+                createCard();
+
+                // var firstPresidentCloze = new ClozeCard(answer.text, answer.cloze);
+                // console.log(firstPresidentCloze.text);
+                // console.log(firstPresidentCloze.cloze);
+                // console.log(firstPresidentCloze.clozeDeleted);
             });
         }
     });
 };
 
-//allows users to view their flashcards
-function viewCards() {
-
-}
+createCard();
