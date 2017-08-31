@@ -2,8 +2,6 @@ var BasicCard = require('./basicCard.js');
 var ClozeCard = require('./clozeCard.js');
 var inquirer = require('inquirer');
 var fs = require('fs');
-var wait;
-
 
 
 //create functions for the options the user can choose
